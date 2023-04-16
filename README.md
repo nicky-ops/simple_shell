@@ -1,6 +1,9 @@
 # C - Simple Shell
-In this project we wrote a simple UNIX command interpreter
-
+##### In this project we wrote a simple UNIX command interpreter
+* A shell is a computer program that exposes the operating system's services to a user or to other programs.
+* It is referred to as a shell since it is the outermost layer around the operating system.
+* To use a Command line shell, you need to be familiar with commands and their calling sysntax, and know the specific shell scripting language i.e *bash*.
+* A CLI uses alphanumeric characters typed on the keyboard to provide instructions and data to the OS interactively.
 ## PID & PPID
 A process has a unique ID referred to as a *process ID* that is used to interact with and manipulate process. The current Process ID can be retrived using the system call <getpid>.
 * Every time a program is run, a new process is created hence a new PID for each instance of a program.
