@@ -4,6 +4,7 @@
 * It is referred to as a shell since it is the outermost layer around the operating system.
 * To use a Command line shell, you need to be familiar with commands and their calling sysntax, and know the specific shell scripting language i.e *bash*.
 * A CLI uses alphanumeric characters typed on the keyboard to provide instructions and data to the OS interactively.
+* A *read-eval-print loop (REPL)* is a simple interactive environment in computer programming that takes user inputs, executes them and then presents the result to the user.
 ## PID & PPID
 A process has a unique ID referred to as a *process ID* that is used to interact with and manipulate process. The current Process ID can be retrived using the system call <getpid>.
 * Every time a program is run, a new process is created hence a new PID for each instance of a program.
