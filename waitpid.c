@@ -10,7 +10,7 @@
 
 pid_t my_waitpid(pid_t pid, int *wstatus, int options)
 {
-	struc user_regs_struct regs;
+	struct user_regs_struct regs;
 	long int value1, value2, value3, value4;
 
 	value1 = ptrace(PTRACE_ATTACH, pid, NULL, NULL);
