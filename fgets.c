@@ -1,7 +1,7 @@
 #include "main.h"
 
 /**
-  * fgets - funciton pointer that reads line of text from,
+  * my_fgets - function pointer that reads line of text from,
   * standard input.
   * @s: pointer to store input
   * @size: size of pointer
