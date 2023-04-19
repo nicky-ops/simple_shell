@@ -1,15 +1,16 @@
 #include "main.h"
 
 /**
-  * my_strtok - funciton breaks a string into a sequence of,
-  * zero of more nonempty tokens.
+  * my_strtok - function breaks a string into a sequence of,
+  * zero or more nonempty tokens.
   * @str: string to be parsed
   * @delim: specifies a set of bytes that delimit the tokens,
   * in the parsed string
+  * Return: character of tokens
   */
 char *my_strtok(char *str, const char *delim)
 {
-	static char *p = 0;
+	static char *p;
 	char *token = 0;
 
 	if (p == NULL)
@@ -21,7 +22,7 @@ char *my_strtok(char *str, const char *delim)
 		p = str;
 	}
 	token = p;
-	while (*p != '\0' &&strchr(delim, *p) == NULL)
+	while (*p != '\0' && strchr(delim, *p) == NULL)
 	{
 		p++;
 	}
