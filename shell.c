@@ -4,19 +4,20 @@
   * main - execute the shell
   * Return: 0 on success
   */
-int main()
+int main(void)
 {
-	char *buffer = malloc(sizeof(char) * BUFFER_SIZE);
+	char *buffer = malloc(BUFFER_SIZE * (sizeof(char)));
 	char *args[BUFFER_SIZE];
-	int i, wait_status;
-	char *token;
-	pid_t pid;
+	int wait_status;
 
 	while (1)
 	{
 		printf("$ ");
 		fgets(buffer, BUFFER_SIZE, stdin);
-		token = strtok(buffer, TOKEN_DELIMITER);
+
+		char *token = strtok(buffer, TOKEN_DELIMITER);
+		int i = 0;
+
 		while (token != NULL)
 		{
 			args[i++] = token;
@@ -24,19 +25,20 @@ int main()
 		}
 		args[i] = NULL;
 
-		pid = fork();
-		if (pid < 0)
+		pid_t pid = fork();
+
+		if (pid == 0)
 		{
-			perror("invalid");
-		}
-		else if (pid == 0)
-		{
-			my_execvp(args[0], args);
+			execvp(args[0], args);
 			exit(EXIT_FAILURE);
+		}
+		else if (pid < 0)
+		{
+			perror("fork");
 		}
 		else
 		{
-			waitpid(pid, &wait_status, WUNTRACED);
+			my_waitpid(pid, &wait_status, WUNTRACED);
 		}
 	}
 	free(buffer);

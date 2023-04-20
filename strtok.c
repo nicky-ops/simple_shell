@@ -10,8 +10,10 @@
   */
 char *my_strtok(char *str, const char *delim)
 {
-	static char *p;
-	char *token = 0;
+	static char *p = NULL;
+	static char end = 0;
+	char *token;
+	int ln;
 
 	if (p == NULL)
 	{
@@ -21,7 +23,17 @@ char *my_strtok(char *str, const char *delim)
 	{
 		p = str;
 	}
+	if (end)
+	{
+		return (NULL);
+	}
+	if (ln == 0)
+	{
+		end = 1;
+		return (NULL);
+	}
 	token = p;
+	p += ln;
 	while (*p != '\0' && strchr(delim, *p) == NULL)
 	{
 		p++;
