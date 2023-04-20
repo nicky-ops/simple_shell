@@ -13,23 +13,23 @@ int main(void)
 	while (1)
 	{
 		printf("$ ");
-		fgets(buffer, BUFFER_SIZE, stdin);
+		my_fgets(buffer, BUFFER_SIZE, stdin);
 
-		char *token = strtok(buffer, TOKEN_DELIMITER);
+		char *token = my_strtok(buffer, TOKEN_DELIMITER);
 		int i = 0;
 
 		while (token != NULL)
 		{
 			args[i++] = token;
-			token = strtok(NULL, TOKEN_DELIMITER);
+			token = my_strtok(NULL, TOKEN_DELIMITER);
 		}
 		args[i] = NULL;
 
-		pid_t pid = fork();
+		pid_t pid = my_fork();
 
 		if (pid == 0)
 		{
-			execvp(args[0], args);
+			my_execvp(args[0], args);
 			exit(EXIT_FAILURE);
 		}
 		else if (pid < 0)
