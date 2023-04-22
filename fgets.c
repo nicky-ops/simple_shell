@@ -11,18 +11,21 @@
 
 char *my_fgets(char *s, int size, FILE *stream)
 {
-	s = (char *)malloc(size * sizeof(char));
-	if (s == NULL)
-	{
-		return (NULL);
-	}
 	int i = 0;
 	int j = fgetc(stream);
 
+	if (s == NULL || stream == NULL)
+	{
+		return (NULL);
+	}
+
 	while ((j != EOF) && (j != '\n') && (i < size - 1))
 	{
-		s[i++] = (char) j;
-		j = fgetc(stream);
+		s[i++] =j;
+		if (j == '\n')
+		{
+			break;
+		}
 	}
 	s[i] = '\0';
 	if (i == 0 && j == EOF)
