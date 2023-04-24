@@ -18,7 +18,7 @@ char *my_fgets(char *s, int size, FILE *stream)
 	{
 		return (NULL);
 	}
-	int j = fgetc(stream);
+	j = fgetc(stream);
 
 	while ((j != EOF) && (j != '\n') && (i < size - 1))
 	{
