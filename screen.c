@@ -2,10 +2,11 @@
 /**
   * print_prompt - display the prompt
   */
-void print_prompt()
-{
+void print_prompt(void)
+
     static int first_time = 1;
-    if (first_time) {
+    if (first_time)
+    {
         const char* CLEAR_SCREEN_ANSI = " \033[1;1H\033[2J";
         write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 12);
         first_time = 0;
@@ -24,10 +25,11 @@ void get_input(char command[], char *parameters[])
     int count = 0, i = 0;
     char *tokens[100], *token;
 
-    for (;;) {
-        int c = fgetc(stdin);
-        line[count++] = (char) c;
-        if (c == '\n')
+    for (;;)
+    {
+	int c = fgetc(stdin);
+	line[count++] = (char) c;
+	if (c == '\n')
             break;
     }
 
