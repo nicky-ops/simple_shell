@@ -52,6 +52,7 @@ void read_command(char cmd[], char *par[])
   * @stream: file stream
   * Return: char result
  */
+
 char *my_fgets(char *s, int size, FILE *stream)
 {
 	char *result = fgets(s, size, stream);
