@@ -25,7 +25,8 @@ int main(void)
 		}
 		args[i] = NULL;
 
-		pid_t pid = my_fork();
+                pid_t pid;        
+		pid = my_fork();
 
 		if (pid == 0)
 		{
