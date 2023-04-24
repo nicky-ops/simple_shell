@@ -63,7 +63,7 @@ int main()
         get_input(command, parameters);
         if (fork() != 0)
             wait(NULL);
-        else {
+	else {
             strcpy(cmd, "/bin/");
             strcat(cmd, command);
             execve(cmd, parameters, envp);
