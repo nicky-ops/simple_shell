@@ -4,14 +4,15 @@
   */
 void print_prompt(void)
 
-    static int first_time = 1;
-    if (first_time)
-    {
-        const char* CLEAR_SCREEN_ANSI = " \033[1;1H\033[2J";
-        write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 12);
-        first_time = 0;
-    }
-    printf("#");
+static int first_time = 1;
+if (first_time)
+
+	{
+	const char* CLEAR_SCREEN_ANSI = " \033[1;1H\033[2J";
+	write(STDOUT_FILENO, CLEAR_SCREEN_ANSI, 12);
+	first_time = 0;
+	}
+printf("#");
 }
 /**
  * get_input - read user input and parse it into command and parameters
@@ -21,55 +22,57 @@ void print_prompt(void)
 
 void get_input(char command[], char *parameters[])
 {
-    char line[1024];
-    int count = 0, i = 0;
-    char *tokens[100], *token;
+char line[1024];
+int count = 0, i = 0;
+char *tokens[100], *token;
 
-    for (;;)
-    {
+for (;;)
+{
 	int c = fgetc(stdin);
-	line[count++] = (char) c;
-	if (c == '\n')
-            break;
-    }
+	line[count++] = (char) c
 
-    if (count == 1)
-        return;
+		if (c == '\n')
+break;
+}
 
-    token = strtok(line, "\n");
+if (count == 1)
+return;
 
-    while (token != NULL) {
-        tokens[i++] = strdup(token);
-        token = strtok(NULL, "\n");
-    }
+token = strtok(line, "\n");
 
-    strcpy(command, tokens[0]);
+while (token != NULL) {
+tokens[i++] = strdup(token);
+token = strtok(NULL, "\n");
+}
 
-    for (int j = 0; j < i; j++)
-        parameters[j] = tokens[j];
+strcpy(command, tokens[0]);
 
-    parameters[i] = NULL;
+for (int j = 0; j < i; j++)
+parameters[j] = tokens[j];
+
+parameters[i] = NULL;
 }
 
 /**
  * main - execute the shell
  * Return: 0 on success
  */
-int main()
+int main(void)
 {
-    char cmd[100], command[100], *parameters[20];
-    char *envp[] = {(char*)0};
+char cmd[100], command[100], *parameters[20];
+char *envp[] = {(char*)0};
 
-    while (1) {
-        print_prompt();
-        get_input(command, parameters);
-        if (fork() != 0)
-            wait(NULL);
-	else {
-            strcpy(cmd, "/bin/");
-            strcat(cmd, command);
-            execve(cmd, parameters, envp);
-        }
-    }
-    return 0;
+while (1)
+{
+print_prompt();
+get_input(command, parameters);
+if (fork() != 0)
+wait(NULL);
+else {
+strcpy(cmd, "/bin/");
+strcat(cmd, command);
+execve(cmd, parameters, envp);
+}
+}
+return (0);
 }
