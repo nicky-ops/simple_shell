@@ -13,3 +13,9 @@ A process has a unique ID referred to as a *process ID* that is used to interact
 
 ## Executing a Program
 *execve* is a system call that allows a process to execute another program. It loads the new program into the current process' memory in place of the previous program.
+### The simple shell should;
+1. Read input from the user i.e using fgets(). If the command line arguments have been specified, then the shell treats the first argument as the name of a file from which to read commands.
+2. Parse input to seperate the command/script and its arguments using strtok().
+3. Fork child process to execute a command using fork() to create a child process.
+4. Execute the command in the child process using execvp(). This function takes the command and its arguments as its arguments.
+5. Wait for the child process to complete using the wait() or waitpid() function.
