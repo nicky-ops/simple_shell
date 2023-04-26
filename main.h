@@ -17,8 +17,8 @@ char *my_strtok(char *str, const char *delim);
 pid_t my_waitpid(pid_t pid, int *wstatus, int options);
 pid_t my_fork(void);
 int my_execvp(char *file, char **args);
-void type_prompt();
-void read_command ( char cmd[], char *par[] );
+void type_prompt(void);
+void read_command(char cmd[], char *par[]);
 
 
 #endif
