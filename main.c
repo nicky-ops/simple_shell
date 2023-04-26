@@ -1,21 +1,17 @@
 #include "main.h"
-
 /**
   * main - execute the shell
   * Return: 0 on success
   */
 int main(void)
 {
-	char *buffer = malloc(BUFFER_SIZE * (sizeof(char)));
-	char *args[BUFFER_SIZE];
-	int wait_status;
+	char *buffer = malloc(BUFFER_SIZE * (sizeof(char))), *args[BUFFER_SIZE];
+	int wait_status, i = 0;
 
 	while (1)
 	{
-
 		pid_t pid;
 		char *token;
-		int i = 0;
 
 		printf("$ ");
 		fgets(buffer, BUFFER_SIZE, stdin);
