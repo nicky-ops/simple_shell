@@ -19,6 +19,11 @@ int main(void)
 
 		printf("$ ");
 		fgets(buffer, BUFFER_SIZE, stdin);
+		buffer[strcspn(buffer, "\n")] = 0;
+		if (strcmp(buffer, "exit") == 0)
+		{
+			exit(0);
+		}
 		token = strtok(buffer, TOKEN_DELIMITER);
 		while (token != NULL)
 		{
