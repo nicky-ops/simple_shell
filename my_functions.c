@@ -61,7 +61,9 @@ char *my_fgets(char *s, int size, FILE *stream)
 	{
 		int ch;
 
-		while ((ch = getchar()) != '\n' && ch != EOF);
+		while ((ch = getchar()) != '\n' && ch != EOF)
+		{
+			return (NULL);
 	}
 	return (result);
 }

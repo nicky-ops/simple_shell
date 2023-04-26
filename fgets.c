@@ -13,6 +13,7 @@ char *my_fgets(char *s, int size, FILE *stream)
 {
 	int i = 0;
 	int j;
+
 	s = (char *)malloc(size * sizeof(char));
 	if (s == NULL)
 	{

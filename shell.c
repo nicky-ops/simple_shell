@@ -24,10 +24,8 @@ int main(void)
 			token = my_strtok(NULL, TOKEN_DELIMITER);
 		}
 		args[i] = NULL;
-
-                pid_t pid;        
+		pid_t pid;
 		pid = my_fork();
-
 		if (pid == 0)
 		{
 			my_execvp(args[0], args);
