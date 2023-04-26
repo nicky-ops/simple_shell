@@ -23,7 +23,7 @@ void print_prompt(void)
 void get_input(char command[], char *parameters[])
 {
 	char line[1024];
-	int count = 0, i = 0;
+	int count = 0, i = 0, j = 0;
 	char *tokens[100], *token;
 
 	for (;;)
@@ -47,7 +47,7 @@ void get_input(char command[], char *parameters[])
 		token = strtok(NULL, "\n");
 	}
 	strcpy(command, tokens[0]);
-	for (int j = 0; j < i; j++)
+	for (j = 0; j < i; j++)
 	{
 		parameters[j] = tokens[j];
 		parameters[i] = NULL;
