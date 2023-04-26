@@ -3,7 +3,7 @@
 ssize_t my_getline(char **lineptr, size_t *n, FILE *stream) {
     char *line = NULL;
     size_t size = 0;
-    ssize_t len = 0;
+    size_t len = 0;
     int c;
 
     while ((c = fgetc(stream)) != EOF) {
