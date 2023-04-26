@@ -14,11 +14,12 @@ int main(void)
 	{
 
 		pid_t pid;
-		char *token = strtok(buffer, TOKEN_DELIMITER);
+		char *token;
 		int i = 0;
 
 		printf("$ ");
 		fgets(buffer, BUFFER_SIZE, stdin);
+		token = strtok(buffer,TOKEN_DELIMITER);
 		while (token != NULL)
 		{
 			args[i++] = token;
