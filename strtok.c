@@ -13,7 +13,7 @@ char *my_strtok(char *str, const char *delim)
 	static char *p = NULL;
 	static char end = 0;
 	char *token;
-	int ln;
+	int ln = 0;
 
 	if (p == NULL)
 	{

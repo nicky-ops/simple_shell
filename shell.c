@@ -12,12 +12,13 @@ int main(void)
 
 	while (1)
 	{
-		printf("$ ");
-		fgets(buffer, BUFFER_SIZE,stdin);
-
-		char *token = strtok(buffer, TOKEN_DELIMITER);
+		char *token;
 		int i = 0;
+		pid_t pid;
 
+		printf("$ ");
+		fgets(buffer, BUFFER_SIZE, stdin);
+		token = strtok(buffer, TOKEN_DELIMITER);
 		while (token != NULL)
 		{
 			args[i++] = token;
@@ -25,7 +26,7 @@ int main(void)
 		}
 		args[i] = NULL;
 
-		pid_t pid = fork();
+		pid = fork();
 
 		if (pid == 0)
 		{
