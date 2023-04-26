@@ -16,8 +16,13 @@ int main() {
 
     while(1) {
 	    int i = 0;
-        printf("Shell> ");
+        printf("$ ");
         fgets(command, MAX_COMMAND_LENGTH, stdin);
+	command[strcspn(command, "\n")] = 0;
+	if (strcmp(command, "exit") == 0)
+	{
+		exit(0);
+	}
         token = strtok(command, " \n");
         while(token != NULL && i < MAX_ARGS - 1) {
             args[i] = token;
