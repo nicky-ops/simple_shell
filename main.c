@@ -19,7 +19,7 @@ int main(void)
 
 		printf("$ ");
 		fgets(buffer, BUFFER_SIZE, stdin);
-		token = strtok(buffer,TOKEN_DELIMITER);
+		token = strtok(buffer, TOKEN_DELIMITER);
 		while (token != NULL)
 		{
 			args[i++] = token;
