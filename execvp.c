@@ -11,22 +11,23 @@ int my_execvp(char *file, char **args)
 	int status;
 
 	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork error");
+		exit(EXIT_FAILURE);
+	}
 	if (pid == 0)
 	{
-		if (execvp(file, args) == -1)
+	if (execvp(file, args) == -1)
 		{
 			perror("execvp error");
 			exit(EXIT_FAILURE);
 		}
 	}
-	else if (pid < 0)
+	if (waitpid(pid, &status, 0) == -1)
 	{
-		perror("fork error");
+		perror("waitpid error");
 		exit(EXIT_FAILURE);
-	}
-	else
-	{
-		waitpid(pid, &status, 0);
 	}
 	return (status);
 }
