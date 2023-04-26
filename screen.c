@@ -17,7 +17,7 @@ void print_prompt(void)
 }
 /**
  * get_input - read user input and parse it into command and parameters
- * @cmd: string buffer to store command
+ * @command: string buffer to store command
  * @parameters: array buffer to store parameters
  */
 void get_input(char command[], char *parameters[])
