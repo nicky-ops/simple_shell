@@ -24,4 +24,5 @@ void read_command(char cmd[], char *par[]);
 int execute_command(program_data *prog_data);
 char *_getline(void);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+int history(char *input);
 #endif
