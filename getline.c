@@ -1,71 +1,33 @@
-#include "main.h"
+#include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
 
-void remove_comments(char *input);
+#define BUFSIZE 1024
 
-
-/**
- * _readline - read input from stdin
- * Return: input string
- */
-char *_readline()
+char *_getline()
 {
-	int p, buffer_size = BUFSIZE, rd;
-	char q = 0;
-	char *input = malloc(buffer_size);
+    static char buffer[BUFSIZE];
+    static int pos = 0;
+    static int size = 0;
 
-	if (input == NULL)
-	{
-		free(input);
-		return (NULL);
-	}
+    int rd = 0;
+    char c = '\0';
+    if (pos >= size || buffer[pos] == '\n') {
+        rd = read(STDIN_FILENO, buffer, BUFSIZE);
+        if (rd == -1) {
+            perror("read");
+            exit(EXIT_FAILURE);
+        }
+        if (rd == 0) {
+            return NULL;
+        }
+        pos = 0;
+        size = rd;
+    }
 
-	for (p = 0; q != EOF && p != '\n'; p++)
-	{
-		fflush(stdin);
-		rd = read(STDIN_FILENO, &q, 1);
-		if (rd == 0)
-		{
-			free(input);
-			exit(EXIT_SUCCESS);
-		}
-		input[p] = q;
-		if (input[0] == '\n')
-		{
-			free(input);
-			return ("\0");
-		}
-		if (p >= buffer_size)
-		{
-			input = _realloc(input, buffer_size, buffer_size + 1);
-			if (input == NULL)
-			{
-				return (NULL);
-			}
-			buffer_size++;
-		}
-	}
-	input[p] = '\0';
-	remove_comments(input);
-	return (input);
-}
+    c = buffer[pos];
+    pos++;
 
-/**
- * remove_comments - remove comments from input
- * @input: input string
- * Return: void
- */
-void remove_comments(char *input)
-{
-	int p;
-
-	for (p = 0; input[p] != '\0'; p++)
-	{
-		if (input[p] == '#')
-		{
-			input[p] = '\0';
-			break;
-		}
-	}
+    return (c == '\n' || c == '\0') ? "" : &buffer[pos - 1];
 }
 
