@@ -1,78 +1,112 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
+#include "main.h"
 
-#define MAX_COMMAND_LENGTH 1024
+/**
+ * main - shell kernel
+ * @num_of_inp_args: Number of inputed args.
+ * @arr_of_inp_args: Pointer to array of inputed args.
+ * @env: Pointer to array of env variables.
+ * Return: 0.
+ */
 
-extern char **environ;
+int main(int num_of_inp_args, char **arr_of_inp_args, char **env)
+{
+	char *buffer = NULL, **command = NULL;
+	size_t buf_size = 0;
+	ssize_t chars_readed = 0;
+	int cicles = 0;
+	(void)num_of_inp_args;
 
-int main() {
-    char command[MAX_COMMAND_LENGTH];
-    char* args[MAX_COMMAND_LENGTH/2];
-    int status;
+	while (1)
+	{
+		cicles++;
+		prompt();
+		signal(SIGINT, handle);
+		chars_readed = getline(&buffer, &buf_size, stdin);
+		if (chars_readed == EOF)
+			_EOF(buffer);
+		else if (*buffer == '\n')
+			free(buffer);
+		else
+		{
+			buffer[_strlen(buffer) - 1] = '\0';
+			command = tokening(buffer, " \0");
+			free(buffer);
+			if (_strcmp(command[0], "exit") != 0)
+				shell_exit(command);
+			else if (_strcmp(command[0], "cd") != 0)
+				change_dir(command[1]);
+			else
+				create_child(command, arr_of_inp_args[0], env, cicles);
+		}
+		fflush(stdin);
+		buffer = NULL, buf_size = 0;
+	}
+	if (chars_readed == -1)
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
 
-    while (1) {
-	    int i = 0;
-	    char *token;
-        printf("$ ");
-        fflush(stdout);
 
-        fgets(command, MAX_COMMAND_LENGTH, stdin);
-	if (fgets(command, MAX_COMMAND_LENGTH, stdin) == NULL) {
-            break;
-        }
-        command[strcspn(command, "\n")] = 0;
+/**
+ * handle - Handle Ctr + C signal.
+ * @_prompt: prompt to handle.
+ * Return: Nothing.
+ */
 
-        token = strtok(command, " ");
-        while (token != NULL) {
-            args[i++] = token;
-            token = strtok(NULL, " ");
-        }
-        args[i] = NULL;
+void handle(int _prompt)
+{
+	(void)_prompt;
+	write(STDOUT_FILENO, "\n(NMshell) $ ", 14);
+}
 
-        if (strcmp(args[0], "exit") == 0) {
-            break;
-        } else if (strcmp(args[0], "cd") == 0) {
-            chdir(args[1]);
-        } else if (strcmp(args[0], "help") == 0) {
-            printf("Type commands and arguments, and hit enter.\n");
-        } else {
-            int found_command = 0;
-            char* path = getenv("PATH");
-            char* path_copy = strdup(path);
-            char* dir = strtok(path_copy, ":");
 
-            while (dir != NULL && !found_command) {
-                char command_path[MAX_COMMAND_LENGTH];
-		pid_t pid;
+/**
+ * prompt - Prints the prompt
+ * Return: Nothing
+ */
+void prompt(void)
+{
+	if (isatty(STDIN_FILENO))
+		write(STDOUT_FILENO, "(NMshell) $ ", 13);
+}
 
-                snprintf(command_path, MAX_COMMAND_LENGTH, "%s/%s", dir, args[0]);
 
-                if (access(command_path, X_OK) != -1) {
-                    found_command = 1;
+/**
+ * shell_exit - Exits the shell.
+ * @command: Pointer to tokenized command.
+ * Return: nothing
+ */
+void shell_exit(char **command)
+{
+	int status = 0;
 
-                    pid = fork();
-                    if (pid == 0) {
-                        execvp(command_path, args);
-                        printf("Unknown command: %s\n", args[0]);
-                        exit(0);
-                    } else {
-                        wait(&status);
-                    }
-                }
+	if (command[1] == NULL)
+	{
+		free_mem(command);
+		exit(EXIT_SUCCESS);
+	}
 
-                dir = strtok(NULL, ":");
-            }
+	status = _atoi(command[1]);
+	free_mem(command);
+	exit(status);
+}
 
-            free(path_copy);
 
-            if (!found_command) {
-                printf("Unknown command: %s\n", args[0]);
-            }
-        }
-    }
+/**
+ * _EOF - Chaecks if buffer is EOF
+ * @buffer_str: Pointer to the input string.
+ * Return: Nothing
+ */
+void _EOF(char *buffer_str)
+{
+	if (buffer_str)
+	{
+		free(buffer_str);
+		buffer_str = NULL;
+	}
 
-    return 0;
+	if (isatty(STDIN_FILENO))
+		write(STDOUT_FILENO, "\n", 1);
+	free(buffer_str);
+	exit(EXIT_SUCCESS);
 }

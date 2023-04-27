@@ -1,35 +1,49 @@
 #ifndef MAIN_H
 #define MAIN_H
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <sys/wait.h>
 #include <sys/types.h>
-#include <sys/ptrace.h>
-#include <sys/user.h>
+#include <sys/stat.h>
+#include <sys/wait.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
 
-#define TOKEN_DELIMITER " \t\r\n\a"
-#define BUFFER_SIZE 1024
-#define BUFSIZE 1024
-typedef struct program_data program_data;
+/*     main.c      */
 
-char *my_fgets(char *s, int size, FILE *stream);
-char *my_strtok(char *str, const char *delim);
-pid_t my_waitpid(pid_t pid, int *wstatus, int options);
-pid_t my_fork(void);
-int my_execvp(char *file, char **args);
-void type_prompt(void);
-void read_command(char cmd[], char *par[]);
-int execute_command(program_data *prog_data);
-char *_getline(void);
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-int history(char *input);
-int print_environment(char *name);
-typedef struct list_s
-{
-    char *string;
-    struct list_s *next;
-} list_t;
+int main(int ac, char **av, char **env);
+void prompt(void);
+void handle(int signals);
+void _EOF(char *buffer);
+void shell_exit(char **command);
 
-#endif
+/*	 child_pid.c	*/
+
+void create_child(char **command, char *name, char **env, int cicles);
+int change_dir(const char *path);
+
+/*        execute_env.c       */
+
+void execute(char **command, char *name, char **env, int cicles);
+void print_env(char **env);
+char **get_path(char **env);
+void msgerror(char *name, int cicles, char **command);
+
+/*	str_token.c	*/
+
+char **tokening(char *buffer, const char *s);
+
+/*	free_memory.c	*/
+
+void free_mem(char **command);
+void free_exit(char **command);
+
+/*	 funct.c	*/
+
+int _strcmp(char *s1, char *s2);
+unsigned int _strlen(char *s);
+char *_strcpy(char *dest, char *src);
+int _atoi(char *s);
+char *_strcat(char *dest, char *src);
+
+
+#endif /* MAIN_H*/
