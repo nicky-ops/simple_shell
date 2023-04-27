@@ -18,10 +18,11 @@ int my_execvp(char *file, char **args)
 	}
 	if (pid == 0)
 	{
-	if (execvp(file, args) == -1)
+		if (execvp(file, args) == -1)
 		{
 			perror("execvp error");
 			exit(EXIT_FAILURE);
+
 		}
 	}
 	if (waitpid(pid, &status, 0) == -1)
