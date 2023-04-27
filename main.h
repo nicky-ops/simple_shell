@@ -11,7 +11,7 @@
 
 #define TOKEN_DELIMITER " \t\r\n\a"
 #define BUFFER_SIZE 1024
-
+#define BUFSIZE 1024
 typedef struct program_data program_data;
 
 char *my_fgets(char *s, int size, FILE *stream);
@@ -22,4 +22,6 @@ int my_execvp(char *file, char **args);
 void type_prompt(void);
 void read_command(char cmd[], char *par[]);
 int execute_command(program_data *prog_data);
+char *_getline(void);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 #endif

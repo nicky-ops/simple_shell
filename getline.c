@@ -1,46 +1,71 @@
 #include "main.h"
+#include <stdlib.h>
+
+void remove_comments(char *input);
+
 
 /**
-  * my_getline - reads a line from standard input
-  * @lineptr: pointer to a pointer of characters
-  * @n: number of lines
-  * @stream: pointer to a file
-  * Return: length
-  */
-ssize_t my_getline(char **lineptr, size_t *n, FILE *stream)
+ * _readline - read input from stdin
+ * Return: input string
+ */
+char *_readline()
 {
-	char *line = NULL;
-	size_t size = 0;
-	size_t len = 0;
-	int c;
+	int p, buffer_size = BUFSIZE, rd;
+	char q = 0;
+	char *input = malloc(buffer_size);
 
-	while ((c = fgetc(stream)) != EOF)
+	if (input == NULL)
 	{
-		if (size <= len + 1)
+		free(input);
+		return (NULL);
+	}
+
+	for (p = 0; q != EOF && p != '\n'; p++)
+	{
+		fflush(stdin);
+		rd = read(STDIN_FILENO, &q, 1);
+		if (rd == 0)
 		{
-			size += 256;
-			line = realloc(line, size);
-			if (!line)
-			{
-				return (-1);
-			}
+			free(input);
+			exit(EXIT_SUCCESS);
 		}
-		line[len++] = c;
-		if (c == '\n')
+		input[p] = q;
+		if (input[0] == '\n')
 		{
+			free(input);
+			return ("\0");
+		}
+		if (p >= buffer_size)
+		{
+			input = _realloc(input, buffer_size, buffer_size + 1);
+			if (input == NULL)
+			{
+				return (NULL);
+			}
+			buffer_size++;
+		}
+	}
+	input[p] = '\0';
+	remove_comments(input);
+	return (input);
+}
+
+/**
+ * remove_comments - remove comments from input
+ * @input: input string
+ * Return: void
+ */
+void remove_comments(char *input)
+{
+	int p;
+
+	for (p = 0; input[p] != '\0'; p++)
+	{
+		if (input[p] == '#')
+		{
+			input[p] = '\0';
 			break;
 		}
 	}
-	if (len == 0)
-	{
-		return (-1);
-	}
-	line[len] = '\0';
-	if (*lineptr)
-	{
-		free(*lineptr);
-	}
-	*lineptr = line;
-	*n = size;
-	return (len);
 }
+
