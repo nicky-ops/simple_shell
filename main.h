@@ -25,4 +25,11 @@ int execute_command(program_data *prog_data);
 char *_getline(void);
 void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 int history(char *input);
+int print_environment(char *name);
+typedef struct list_s
+{
+    char *string;
+    struct list_s *next;
+} list_t;
+
 #endif
