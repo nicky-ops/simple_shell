@@ -1,59 +1,72 @@
 #include "main.h"
 
 /**
- * main - shell kernel
- * @num_of_inp_args: Number of inputed args.
- * @arr_of_inp_args: Pointer to array of inputed args.
- * @env: Pointer to array of env variables.
- * Return: 0.
- */
-
-int main(int num_of_inp_args, char **arr_of_inp_args, char **env)
+  * main - entry point to the program
+  * @argc: number of arguments passed to the main function.
+  * @argv: pointer to an array of type char containing,
+  * arguments passed to the command line.
+  * @env: pointer to enviroment variables.
+  * Return: 0 on success
+  */
+int main(int argc, char **argv, char **env)
 {
-	char *buffer = NULL, **command = NULL;
-	size_t buf_size = 0;
-	ssize_t chars_readed = 0;
-	int cicles = 0;
-	(void)num_of_inp_args;
+	int c;
+	char *buffer = NULL, **cmd = NULL;
+	size_t size = 0;
+	ssize_t read_chars = 0;
+	FILE *file;
 
+	if (argc > 1)
+	{
+		file = fopen(argv[1], "r");
+		check(file);
+	}
 	while (1)
 	{
-		cicles++;
-		prompt();
-		signal(SIGINT, handle);
-		chars_readed = getline(&buffer, &buf_size, stdin);
-		if (chars_readed == EOF)
+		c++;
+		my_prompt();
+		read_chars = getline(&buffer, &size, stdin);
+		if (read_chars == EOF)
 			_EOF(buffer);
 		else if (*buffer == '\n')
 			free(buffer);
 		else
 		{
 			buffer[_strlen(buffer) - 1] = '\0';
-			command = tokening(buffer, " \0");
+			cmd = gen_tokens(buffer, " \0");
 			free(buffer);
-			if (_strcmp(command[0], "exit") != 0)
-				shell_exit(command);
-			else if (_strcmp(command[0], "cd") != 0)
-				change_dir(command[1]);
+			if (_strcmp(cmd[0], "exit") != 0)
+				my_exit(cmd);
+			else if (_strcmp(cmd[0], "cd") != 0)
+				cdir(cmd[1]);
 			else
-				create_child(command, arr_of_inp_args[0], env, cicles);
+				child_process(cmd, argv[0], env, c);
 		}
 		fflush(stdin);
-		buffer = NULL, buf_size = 0;
+		buffer = NULL, size = 0;
 	}
-	if (chars_readed == -1)
-		return (EXIT_FAILURE);
+	r_chars(read_chars);
 	return (EXIT_SUCCESS);
 }
-
+/**
+  * r_chars -read characters
+  * @chars: characters
+  * Return: integer value
+  */
+int r_chars(ssize_t chars)
+{
+	if (chars == -1)
+		return (EXIT_FAILURE);
+	return (0);
+}
 
 /**
- * handle - Handle Ctr + C signal.
+ * input_handle - function handles end of file erorr
  * @_prompt: prompt to handle.
  * Return: Nothing.
  */
 
-void handle(int _prompt)
+void input_handle(int _prompt)
 {
 	(void)_prompt;
 	write(STDOUT_FILENO, "\n(NMshell) $ ", 14);
@@ -61,52 +74,29 @@ void handle(int _prompt)
 
 
 /**
- * prompt - Prints the prompt
- * Return: Nothing
+ * my_prompt - Prints the prompt to the stdandard output
+ * Return: None
  */
-void prompt(void)
+void my_prompt(void)
 {
 	if (isatty(STDIN_FILENO))
 		write(STDOUT_FILENO, "(NMshell) $ ", 13);
 }
-
-
-/**
- * shell_exit - Exits the shell.
- * @command: Pointer to tokenized command.
- * Return: nothing
- */
-void shell_exit(char **command)
-{
-	int status = 0;
-
-	if (command[1] == NULL)
-	{
-		free_mem(command);
-		exit(EXIT_SUCCESS);
-	}
-
-	status = _atoi(command[1]);
-	free_mem(command);
-	exit(status);
-}
-
-
 /**
  * _EOF - Chaecks if buffer is EOF
- * @buffer_str: Pointer to the input string.
+ * @buffer: Pointer to the input string.
  * Return: Nothing
  */
-void _EOF(char *buffer_str)
+void _EOF(char *buffer)
 {
-	if (buffer_str)
+	if (buffer)
 	{
-		free(buffer_str);
-		buffer_str = NULL;
+		free(buffer);
+		buffer = NULL;
 	}
 
 	if (isatty(STDIN_FILENO))
 		write(STDOUT_FILENO, "\n", 1);
-	free(buffer_str);
+	free(buffer);
 	exit(EXIT_SUCCESS);
 }

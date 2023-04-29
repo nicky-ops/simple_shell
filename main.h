@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef MAIN_H_
+#define MAIN_H_
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
@@ -8,42 +8,24 @@
 #include <unistd.h>
 #include <string.h>
 
-/*     main.c      */
-
-int main(int ac, char **av, char **env);
-void prompt(void);
-void handle(int signals);
+int r_chars(ssize_t chars);
+void check(FILE *file);
+void my_prompt(void);
+void imput_handle(int tokens);
 void _EOF(char *buffer);
-void shell_exit(char **command);
-
-/*	 child_pid.c	*/
-
-void create_child(char **command, char *name, char **env, int cicles);
-int change_dir(const char *path);
-
-/*        execute_env.c       */
-
-void execute(char **command, char *name, char **env, int cicles);
+void child_process(char **cmd, char *n, char **env, int c);
+int cdir(const char *path);
+void exec(char **cmd, char *n, char **env, int c);
 void print_env(char **env);
 char **get_path(char **env);
-void msgerror(char *name, int cicles, char **command);
-
-/*	str_token.c	*/
-
-char **tokening(char *buffer, const char *s);
-
-/*	free_memory.c	*/
-
-void free_mem(char **command);
-void free_exit(char **command);
-
-/*	 funct.c	*/
-
+void werror(char *n, int c, char **cmd);
+char **gen_tokens(char *buffer, const char *size);
+void free_memory(char **cmd);
+void my_exit(char **cmd);
 int _strcmp(char *s1, char *s2);
 unsigned int _strlen(char *s);
 char *_strcpy(char *dest, char *src);
 int _atoi(char *s);
 char *_strcat(char *dest, char *src);
 
-
-#endif /* MAIN_H*/
+#endif

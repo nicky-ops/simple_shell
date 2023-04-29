@@ -1,50 +1,50 @@
 #include "main.h"
 
 /**
- * free_exit - free all the memory allocated and exit
- * @command: pointer to command memory
+ * my_exit - free all the memory allocated and exit
+ * @cmd: pointer to command memory
  * Return: Nothing.
  */
 
-void free_exit(char **command)
+void my_exit(char **cmd)
 {
-	size_t inte = 0;
+	size_t size = 0;
 
-	if (command == NULL)
+	if (cmd == NULL)
 		return;
 
-	while (command[inte])
+	while (cmd[size])
 	{
-		free(command[inte]);
-		inte++;
+		free(cmd[size]);
+		size++;
 	}
 
-	if (command[inte] == NULL)
-		free(command[inte]);
-	free(command);
+	if (cmd[size] == NULL)
+		free(cmd[size]);
+	free(cmd);
 	exit(EXIT_FAILURE);
 }
 
 
 /**
- * free_mem - frees all the memory allocated for command
- * @command: Pointer to allocated memory
+ * free_memory - frees all the memory allocated for command
+ * @cmd: Pointer to allocated memory
  * Return: nothing.
  */
-void free_mem(char **command)
+void free_memory(char **cmd)
 {
-	size_t inte = 0;
+	size_t size = 0;
 
-	if (command == NULL)
+	if (cmd == NULL)
 		return;
 
-	while (command[inte])
+	while (cmd[size])
 	{
-		free(command[inte]);
-		inte++;
+		free(cmd[size]);
+		size++;
 	}
 
-	if (command[inte] == NULL)
-		free(command[inte]);
-	free(command);
+	if (cmd[size] == NULL)
+		free(cmd[size]);
+	free(cmd);
 }

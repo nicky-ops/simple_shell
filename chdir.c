@@ -1,20 +1,18 @@
 #include "main.h"
 
 /**
-  * change_dir -  function that changes working directory
-  *
+  * cdir -  function that changes working directory
   * @path: The new current working directory
-  *
   * Return: 0 on success, -1 on failure.
   */
 
-int change_dir(const char *path)
+int cdir(const char *path)
 {
-	char *buf = NULL;
+	char *buffer = NULL;
 	size_t size = 1024;
 
 	if (path == NULL)
-		path = getcwd(buf, size);
+		path = getcwd(buffer, size);
 	if (chdir(path) == -1)
 	{
 		perror(path);
@@ -25,37 +23,37 @@ int change_dir(const char *path)
 
 
 /**
- * create_child - Function that creates a sub process.
- * @command: Pointer to tokenized command
- * @name: Pointer to shell name.
+ * child_process - Function that creates a child process.
+ * @cmd: Pointer to tokenized command
+ * @n: Pointer to shell name.
  * @env: Enviromental variables pointer.
- * @cicles: No of executed cicles.
+ * @c: No of executed cycles.
  * Return: Nothing.
  */
-void create_child(char **command, char *name, char **env, int cicles)
+void child_process(char **cmd, char *n,  char **env, int c)
 {
-	int p_i_d = 0;
+	int pid = 0;
 	int status = 0;
 	int waitError = 0;
 
-	p_i_d = fork();
-	if (p_i_d < 0)
+	pid = fork();
+	if (pid < 0)
 	{
 		perror("Error: ");
-		free_exit(command);
+		my_exit(cmd);
 	}
-	else if (p_i_d == 0)
+	else if (pid == 0)
 	{
-		execute(command, name, env, cicles);
-		free_mem(command);
+		exec(cmd, n, env, c);
+		free_memory(cmd);
 	}
 	else
 	{
-		waitError = waitpid(p_i_d, &status, 0);
+		waitError = waitpid(pid, &status, 0);
 		if (waitError < 0)
 		{
-			free_exit(command);
+			my_exit(cmd);
 		}
-		free_mem(command);
+		free_memory(cmd);
 	}
 }

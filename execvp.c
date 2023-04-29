@@ -2,10 +2,8 @@
 
 /**
  * get_path - gets the value from env PATH
- *
  * @env: env var pointer
- *
- * Return: pathways for commands
+ * Return: path
  */
 char **get_path(char **env)
 {
@@ -18,7 +16,7 @@ char **get_path(char **env)
 		if (_strcmp(pathvalue, "PATH"))
 		{
 			pathvalue = strtok(NULL, "\n");
-			pathways = tokening(pathvalue, ":");
+			pathways = gen_tokens(pathvalue, ":");
 			return (pathways);
 		}
 		inte++;
@@ -29,30 +27,27 @@ char **get_path(char **env)
 
 
 /**
- * execute - function that executes a command
- *
- * @command: command pointer
- *
- * @name: shell name
- *
+ * exec - function that executes a command
+ * @cmd: command pointer
+ * @n: shell name
  * @env: environmental variables pointer
- * @cicles: number of executed cicles
+ * @c: number of executed cycles
  * Return: nothing
  */
-void execute(char **command, char *name, char **env, int cicles)
+void exec(char **cmd, char *n, char **env, int c)
 {
 	char **pathways = NULL, *full_path = NULL;
 	struct stat st;
 	unsigned int i = 0;
 
-	if (_strcmp(command[0], "env") != 0)
+	if (_strcmp(cmd[0], "env") != 0)
 		print_env(env);
-	if (stat(command[0], &st) == 0)
+	if (stat(cmd[0], &st) == 0)
 	{
-		if (execve(command[0], command, env) < 0)
+		if (execve(cmd[0], cmd, env) < 0)
 		{
-			perror(name);
-			free_exit(command);
+			perror(n);
+			my_exit(cmd);
 		}
 	}
 	else
@@ -60,43 +55,42 @@ void execute(char **command, char *name, char **env, int cicles)
 		pathways = get_path(env);
 		while (pathways[i])
 		{
-			full_path = _strcat(pathways[i], command[0]);
+			full_path = _strcat(pathways[i], cmd[0]);
 			i++;
 			if (stat(full_path, &st) == 0)
 			{
-				if (execve(full_path, command, env) < 0)
+				if (execve(full_path, cmd, env) < 0)
 				{
-					perror(name);
-					free_mem(pathways);
-					free_exit(command);
+					perror(n);
+					free_memory(pathways);
+					my_exit(cmd);
 				}
 				return;
 			}
 		}
-		msgerror(name, cicles, command);
-		free_mem(pathways);
+		werror(n, c, cmd);
+		free_memory(pathways);
 	}
 }
 
 
 /**
- * msgerror - Prints message not found
- *
- * @name: shell name
- * @cicles: number of cicles
- * @command: tokenized command
+ * werror - Prints message not found
+ * @n: shell name
+ * @c: number of cicles
+ * @cmd: tokenized command
  * Return: nothing
  */
-void msgerror(char *name, int cicles, char **command)
+void werror(char *n, int c, char **cmd)
 {
 	char cee;
 
-	cee = cicles + '0';
-	write(STDOUT_FILENO, name, _strlen(name));
+	cee = c + '0';
+	write(STDOUT_FILENO, n, _strlen(n));
 	write(STDOUT_FILENO, ": ", 2);
 	write(STDOUT_FILENO, &cee, 1);
 	write(STDOUT_FILENO, ": ", 2);
-	write(STDOUT_FILENO, command[0], _strlen(command[0]));
+	write(STDOUT_FILENO, cmd[0], _strlen(cmd[0]));
 	write(STDOUT_FILENO, ": not found\n", 12);
 }
 
@@ -108,13 +102,13 @@ void msgerror(char *name, int cicles, char **command)
  */
 void print_env(char **env)
 {
-	size_t inte = 0, length = 0;
+	size_t size = 0, length = 0;
 
-	while (env[inte])
+	while (env[size])
 	{
-		length = _strlen(env[inte]);
-		write(STDOUT_FILENO, env[inte], length);
+		length = _strlen(env[size]);
+		write(STDOUT_FILENO, env[size], length);
 		write(STDOUT_FILENO, "\n", 1);
-		inte++;
+		size++;
 	}
 }

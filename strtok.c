@@ -1,12 +1,12 @@
 #include "main.h"
 
 /**
- * tokening - Split and create a full string command.
+ * gen_tokens - Split and create a full string command.
  * @str: Delimiter for strtok.
- * @buffer: Pointer to input string.
+ * @buffer: Pointer
  * Return: String with full command.
  */
-char **tokening(char *buffer, const char *str)
+char **gen_tokens(char *buffer, const char *str)
 {
 	char *token = NULL, **commands = NULL;
 	size_t bufferSize = 0;
@@ -21,7 +21,7 @@ char **tokening(char *buffer, const char *str)
 	{
 		perror("Buffer allocation error");
 		free(buffer);
-		free_mem(commands);
+		free_memory(commands);
 		exit(EXIT_FAILURE);
 	}
 
@@ -32,7 +32,7 @@ char **tokening(char *buffer, const char *str)
 		if (commands[i] == NULL)
 		{
 			perror("Buffer allocation error");
-			free_mem(commands);
+			free_memory(commands);
 			return (NULL);
 		}
 		_strcpy(commands[i], token);
