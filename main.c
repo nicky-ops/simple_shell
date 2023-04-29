@@ -30,6 +30,8 @@ int main(int argc, char **argv, char **env)
 			_EOF(buffer);
 		else if (*buffer == '\n')
 			free(buffer);
+		else if (strcmp(argv[0], "exit") == 0)
+			exit(0);
 		else
 		{
 			buffer[_strlen(buffer) - 1] = '\0';
